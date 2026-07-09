@@ -37,8 +37,12 @@
     text-align:center;box-shadow:inset 0 -2px 0 var(--split-line), inset 0 2px 0 rgba(255,255,255,.04);position:relative;
   }
   .flap.space{background:transparent;box-shadow:none;min-width:10px;}
-  .stats-line{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:10px;}
+  .stats-line{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);margin-top:10px;line-height:1.6;max-width:600px;}
   .stats-line b{color:var(--ink);}
+  .data-badge{
+    display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    background:rgba(51,217,178,0.12);color:var(--teal);border:1px solid var(--teal);padding:4px 10px;border-radius:999px;margin-top:10px;
+  }
 
   .search-bar{margin:18px 0 10px;}
   .search-bar input{
@@ -72,12 +76,6 @@
   }
   .chip:hover{border-color:var(--teal);}
   .chip.active{background:var(--teal);color:#04211b;border-color:var(--teal);font-weight:700;}
-  .budget-row{display:flex;align-items:center;gap:14px;}
-  .budget-row input[type=range]{flex:1;accent-color:var(--amber);}
-  .budget-val{font-family:'JetBrains Mono',monospace;font-weight:700;background:var(--board);color:var(--amber);padding:6px 10px;border-radius:6px;min-width:82px;text-align:center;font-size:14px;}
-  .date-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-  .date-row input[type=date]{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);padding:8px 10px;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:13px;color-scheme:dark;}
-  .date-row span{color:var(--muted);font-size:13px;}
   .clear-link{background:none;border:none;color:var(--muted);font-size:12.5px;cursor:pointer;text-decoration:underline;padding:0;margin-top:2px;}
   .clear-link:hover{color:var(--hot);}
 
@@ -92,40 +90,35 @@
   .dest-name-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
   .dest-city{font-weight:700;font-size:17px;}
   .dest-tags{font-size:12px;color:var(--muted);}
-  .dest-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:5px;}
-  .dest-sub b{color:var(--teal);}
   .badge-hot{font-size:10px;font-weight:700;background:var(--hot);color:#2b0308;padding:2px 6px;border-radius:5px;letter-spacing:.03em;}
-  .dest-price-col{text-align:right;flex-shrink:0;}
-  .dest-price{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;color:var(--amber);}
-  .dest-price-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);display:block;}
-  .dest-chev{font-size:12px;color:var(--muted);margin-top:6px;transition:transform .2s ease;}
+  .dest-cta{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--teal);flex-shrink:0;align-self:center;}
+  .dest-chev{font-size:12px;color:var(--muted);margin-left:8px;transition:transform .2s ease;}
   .dest-card.expanded .dest-chev{transform:rotate(180deg);}
 
   .dest-body{display:none;padding:0 18px 18px;border-top:1px solid var(--line);}
   .dest-card.expanded .dest-body{display:block;padding-top:14px;}
 
-  .month-group{margin-bottom:14px;}
-  .month-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+  .state-msg{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);padding:6px 0;}
+  .state-msg.error{color:var(--hot);}
+  .real-note{font-size:11px;color:var(--muted);margin-bottom:10px;}
+  .real-note b{color:var(--teal);}
+
   .chip-grid{display:flex;flex-wrap:wrap;gap:8px;}
   .date-chip{
     font-family:'Space Grotesk',sans-serif;text-decoration:none;font-size:12.5px;font-weight:600;
-    padding:7px 11px;border-radius:9px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);
-    display:flex;flex-direction:column;gap:1px;min-width:74px;transition:.12s ease;
+    padding:7px 11px;border-radius:9px;border:1px solid var(--teal);background:rgba(51,217,178,0.1);color:var(--ink);
+    display:flex;flex-direction:column;gap:1px;min-width:80px;transition:.12s ease;
   }
   .date-chip:hover{transform:translateY(-1px);}
   .date-chip .dd{font-size:12.5px;}
-  .date-chip .pp{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;}
+  .date-chip .pp{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;color:var(--teal);}
   .date-chip .nn{font-size:10px;color:var(--muted);}
-  .date-chip.tier-best{background:rgba(51,217,178,0.14);border-color:var(--teal);}
-  .date-chip.tier-best .pp{color:var(--teal);}
-  .date-chip.tier-good{background:rgba(255,180,0,0.12);border-color:var(--amber);}
-  .date-chip.tier-good .pp{color:var(--amber);}
-
-  .more-months-btn{
-    background:none;border:none;color:var(--teal);font-size:12.5px;font-weight:600;cursor:pointer;padding:4px 0;text-decoration:underline;
-  }
 
   .empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:14px;}
+  .fallback-link{
+    display:inline-block;margin-top:8px;font-size:12.5px;font-weight:600;color:var(--amber);
+    border:1px solid var(--amber);border-radius:8px;padding:7px 12px;text-decoration:none;
+  }
 
   footer{margin-top:30px;color:var(--muted);font-size:12.5px;line-height:1.7;}
   footer a{color:var(--teal);text-decoration:none;}
@@ -143,6 +136,7 @@
     <p class="eyebrow">✈️ departing the UK</p>
     <div class="board-title" id="boardTitle"></div>
     <p class="stats-line" id="statsLine"></p>
+    <div class="data-badge">● live cached fares via Aviasales</div>
   </header>
 
   <div class="search-bar">
@@ -156,28 +150,13 @@
 
   <div class="filters" id="filtersPanel">
     <div class="filters-row" id="filtersToggle">
-      <span class="ft-label">🔍 Filters — region / dates / budget</span>
+      <span class="ft-label">🔍 Filters — region</span>
       <span class="chev">▾</span>
     </div>
     <div class="filters-body">
       <div>
         <div class="group-label">Region</div>
         <div class="chips" id="regionChips"></div>
-      </div>
-      <div>
-        <div class="group-label">When are you free? (only shows trips that fit entirely inside this window)</div>
-        <div class="date-row">
-          <input type="date" id="dateFrom">
-          <span>→</span>
-          <input type="date" id="dateTo">
-        </div>
-      </div>
-      <div>
-        <div class="group-label">Budget — max return fare</div>
-        <div class="budget-row">
-          <input type="range" id="budgetSlider" min="20" max="900" step="10" value="900">
-          <span class="budget-val" id="budgetVal">≤ £900</span>
-        </div>
       </div>
       <button class="clear-link" id="clearAll">↺ clear all filters</button>
     </div>
@@ -193,17 +172,17 @@
       Safari → Share → "Add to Home Screen". Chrome (Android) → ⋮ menu → "Add to Home screen".
     </div>
     <div class="foot-block">
-      <div class="foot-title">✏️ Keeping this up to date</div>
-      Same idea as <a href="https://flight-deals-web.vercel.app/" target="_blank" rel="noopener">the HK version</a> that inspired it. The exact dates and prices here are generated examples, not a live feed — each destination has a starting <code>base</code> fare near the top of the script, and the calendar of dates around it is auto-spread from that number. To update a route, find it in the <code>DESTINATIONS</code> list and change its <code>base</code> price (and <code>hot: true</code> to flag it as a flash deal). Every date chip links straight to a pre-filled Google Flights search so you can verify the real price before booking.
+      <div class="foot-title">✏️ How this works now</div>
+      Tap a destination to load its real cached fares from Aviasales (via the Travelpayouts Data API). These are genuine prices other travellers recently searched for — not invented numbers — but the cache can be up to about a week old, so a chip's price is a strong indicator, not a live quote. Always tap through to Google Flights to confirm before booking. If a route has no cached fares right now, you'll see a direct link to check Google Flights instead. To add or remove destinations, edit the <code>DESTINATIONS</code> list near the top of the script — no price numbers to maintain by hand anymore, since fares are fetched live.
     </div>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   DESTINATIONS — edit "base" (GBP return) to update fares.
-   region: europe | asia | americas | africa_me | oceania
-   hot: true → whole destination flagged as a flash deal
+   DESTINATIONS — the directory of routes shown on the page.
+   "base" is only used as a rough sort fallback before real
+   prices load; it is never shown to the user as a fare.
    ========================================================= */
 const DESTINATIONS = [
   { key:"lyon", city:"Lyon", country:"France", region:"europe", code:"LYS", from:"LTN", base:24, hot:true },
@@ -303,7 +282,6 @@ const DESTINATIONS = [
   { key:"sydney", city:"Sydney", country:"Australia", region:"oceania", code:"SYD", from:"LHR", base:749, hot:false },
   { key:"fiji", city:"Nadi, Fiji", country:"Fiji", region:"oceania", code:"NAN", from:"LHR", base:899, hot:false }
 ];
-
 const REGIONS = [
   { key:"all", label:"All" },
   { key:"europe", label:"🇪🇺 Europe" },
@@ -313,85 +291,22 @@ const REGIONS = [
   { key:"oceania", label:"🌊 Oceania" }
 ];
 
-const LAST_UPDATED = "9 July 2026";
-const START_DATE = new Date('2026-07-10T00:00:00');
-const MONTHS_AHEAD = 6;
-const MONTHS_INITIAL_SHOWN = 3;
-
-/* ---------- deterministic pseudo-random generator ---------- */
-function seededRandom(str){
-  let h = 1779033703 ^ str.length;
-  for(let i=0;i<str.length;i++){
-    h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
-    h = (h << 13) | (h >>> 19);
-  }
-  return function(){
-    h = Math.imul(h ^ (h >>> 16), 2246822507);
-    h = Math.imul(h ^ (h >>> 13), 3266489909);
-    h ^= h >>> 16;
-    return (h >>> 0) / 4294967296;
-  };
-}
-function addDays(date, n){
-  const d = new Date(date);
-  d.setDate(d.getDate() + n);
-  return d;
-}
-function toISO(d){ return d.toISOString().slice(0,10); }
-function monthLabel(iso){
-  const d = new Date(iso + "T00:00:00");
-  const sameYear = d.getFullYear() === START_DATE.getFullYear();
-  return d.toLocaleDateString('en-GB', { month:'long', year: sameYear ? undefined : 'numeric' });
-}
-function monthKey(iso){ return iso.slice(0,7); }
-function fmtChipDate(iso){
-  const d = new Date(iso + "T00:00:00");
-  return d.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' });
-}
-
-/* ---------- generate a fare calendar for one destination ---------- */
-const calendarCache = new Map();
-function genCalendar(dest){
-  if(calendarCache.has(dest.key)) return calendarCache.get(dest.key);
-  const lengths = dest.base > 150 ? [7,9,10,12,14,16,18,21] : [3,4,5,6,7,8];
-  const entries = [];
-  for(let i=0;i<MONTHS_AHEAD*30;i++){
-    const d = addDays(START_DATE, i);
-    const iso = toISO(d);
-    const r1 = seededRandom(dest.key+iso+'cover')();
-    if(r1 > 0.4) continue; // roughly 40% of days show a bookable fare
-    const r2 = seededRandom(dest.key+iso+'price')();
-    const variance = 1 + Math.pow(r2, 2) * 0.55; // clusters near base, occasional spikes
-    const price = Math.round(dest.base * variance);
-    const r3 = seededRandom(dest.key+iso+'len')();
-    const days = lengths[Math.floor(r3 * lengths.length)];
-    entries.push({ depart: iso, days, ret: toISO(addDays(d, days)), price });
-  }
-  entries.sort((a,b)=>a.depart.localeCompare(b.depart));
-  const min = entries.length ? Math.min(...entries.map(e=>e.price)) : dest.base;
-  entries.forEach(e=>{
-    e.tier = e.price <= min*1.03 ? 'best' : (e.price <= min*1.18 ? 'good' : 'plain');
-  });
-  calendarCache.set(dest.key, entries);
-  return entries;
-}
+document.getElementById('statsLine').textContent =
+  `${DESTINATIONS.length} routes tracked · tap any destination to pull its real cached fares on demand.`;
 
 /* ---------- state ---------- */
-let state = { region:"all", dateFrom:"", dateTo:"", budget:900, hotOnly:false, search:"" };
-let cardState = {}; // key -> { expanded: bool, monthsShown: number }
-DESTINATIONS.forEach(d=>{ cardState[d.key] = { expanded:true, monthsShown: MONTHS_INITIAL_SHOWN }; });
+let state = { region:"all", hotOnly:false, search:"" };
+let cardState = {}; // key -> { expanded, status: 'idle'|'loading'|'ready'|'empty'|'error', entries: [] }
+DESTINATIONS.forEach(d=>{ cardState[d.key] = { expanded:false, status:'idle', entries:[] }; });
 
 (function restoreFromUrl(){
   const p = new URLSearchParams(window.location.search);
   if(p.has('region')) state.region = p.get('region');
-  if(p.has('from')) state.dateFrom = p.get('from');
-  if(p.has('to')) state.dateTo = p.get('to');
-  if(p.has('budget')) state.budget = Number(p.get('budget'));
   if(p.has('hot')) state.hotOnly = p.get('hot') === '1';
   if(p.has('q')) state.search = p.get('q');
 })();
 
-/* ---------- title + stats ---------- */
+/* ---------- title ---------- */
 const titleText = "CHEAP FLIGHTS UK";
 const boardTitle = document.getElementById('boardTitle');
 titleText.split("").forEach(ch=>{
@@ -400,8 +315,6 @@ titleText.split("").forEach(ch=>{
   f.textContent = ch === ' ' ? '' : ch;
   boardTitle.appendChild(f);
 });
-document.getElementById('statsLine').textContent =
-  `${DESTINATIONS.length} routes · flexible dates across the next ${MONTHS_AHEAD} months · updated ${LAST_UPDATED}`;
 
 /* ---------- region chips ---------- */
 const regionChips = document.getElementById('regionChips');
@@ -426,25 +339,6 @@ const searchEl = document.getElementById('destSearch');
 searchEl.value = state.search;
 searchEl.oninput = e=>{ state.search = e.target.value; renderAll(); };
 
-/* ---------- budget slider ---------- */
-const slider = document.getElementById('budgetSlider');
-const budgetVal = document.getElementById('budgetVal');
-slider.value = Math.min(state.budget, 900);
-budgetVal.textContent = state.budget >= 900 ? "any budget" : `≤ £${state.budget}`;
-slider.oninput = ()=>{
-  state.budget = Number(slider.value);
-  budgetVal.textContent = state.budget >= 900 ? "any budget" : `≤ £${state.budget}`;
-  renderAll();
-};
-
-/* ---------- date filters ---------- */
-const dateFromEl = document.getElementById('dateFrom');
-const dateToEl = document.getElementById('dateTo');
-dateFromEl.value = state.dateFrom;
-dateToEl.value = state.dateTo;
-dateFromEl.onchange = e=>{ state.dateFrom = e.target.value; renderAll(); };
-dateToEl.onchange = e=>{ state.dateTo = e.target.value; renderAll(); };
-
 /* ---------- hot-only toggle ---------- */
 const hotToggle = document.getElementById('hotToggle');
 hotToggle.classList.toggle('active', state.hotOnly);
@@ -458,9 +352,6 @@ hotToggle.onclick = ()=>{
 document.getElementById('shareBtn').onclick = async ()=>{
   const p = new URLSearchParams();
   if(state.region !== 'all') p.set('region', state.region);
-  if(state.dateFrom) p.set('from', state.dateFrom);
-  if(state.dateTo) p.set('to', state.dateTo);
-  if(state.budget < 900) p.set('budget', state.budget);
   if(state.hotOnly) p.set('hot', '1');
   if(state.search) p.set('q', state.search);
   const url = `${window.location.origin}${window.location.pathname}${p.toString() ? '?' + p.toString() : ''}`;
@@ -475,9 +366,7 @@ document.getElementById('shareBtn').onclick = async ()=>{
 
 /* ---------- clear all ---------- */
 document.getElementById('clearAll').onclick = ()=>{
-  state = { region:"all", dateFrom:"", dateTo:"", budget:900, hotOnly:false, search:"" };
-  slider.value = 900; budgetVal.textContent = "any budget";
-  dateFromEl.value = ''; dateToEl.value = '';
+  state = { region:"all", hotOnly:false, search:"" };
   searchEl.value = '';
   hotToggle.classList.remove('active');
   history.replaceState(null, '', window.location.pathname);
@@ -486,12 +375,45 @@ document.getElementById('clearAll').onclick = ()=>{
 
 /* ---------- helpers ---------- */
 function gflightsUrl(dest, entry){
-  const q = `Flights to ${dest.city} from ${dest.from} on ${entry.depart} through ${entry.ret}`;
+  if(entry){
+    const q = `Flights to ${dest.city} from ${dest.from} on ${entry.depart} through ${entry.ret}`;
+    return `https://www.google.com/travel/flights?q=${encodeURIComponent(q)}`;
+  }
+  const q = `Flights to ${dest.city} from ${dest.from}`;
   return `https://www.google.com/travel/flights?q=${encodeURIComponent(q)}`;
 }
 function regionLabel(key){
   const r = REGIONS.find(r=>r.key===key);
   return r ? r.label.replace(/^\S+\s/,'') : key;
+}
+function fmtChipDate(iso){
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' });
+}
+function tripDays(depart, ret){
+  const a = new Date(depart+"T00:00:00"), b = new Date(ret+"T00:00:00");
+  return Math.round((b-a) / 86400000);
+}
+
+/* ---------- fetch real fares for a destination (on demand) ---------- */
+async function loadFares(dest){
+  const cs = cardState[dest.key];
+  if(cs.status === 'loading' || cs.status === 'ready') return;
+  cs.status = 'loading';
+  renderAll();
+  try{
+    const res = await fetch(`/api/prices?origin=${encodeURIComponent(dest.from)}&destination=${encodeURIComponent(dest.code)}`);
+    const json = await res.json();
+    if(json.success && json.data && json.data.length){
+      cs.entries = json.data;
+      cs.status = 'ready';
+    } else {
+      cs.status = 'empty';
+    }
+  } catch(e){
+    cs.status = 'error';
+  }
+  renderAll();
 }
 
 /* ---------- render everything ---------- */
@@ -505,61 +427,46 @@ function renderAll(){
     if(state.hotOnly && !d.hot) return false;
     if(q && !(d.city.toLowerCase().includes(q) || d.country.toLowerCase().includes(q) || d.code.toLowerCase().includes(q))) return false;
     return true;
-  });
+  }).sort((a,b)=>a.base-b.base);
 
-  const cards = [];
-  visible.forEach(dest=>{
-    const all = genCalendar(dest);
-    const filtered = all.filter(e=>{
-      if(state.budget < 900 && e.price > state.budget) return false;
-      if(state.dateFrom && (e.depart < state.dateFrom || e.ret < state.dateFrom)) return false;
-      if(state.dateTo && (e.depart > state.dateTo || e.ret > state.dateTo)) return false;
-      return true;
-    });
-    if(filtered.length === 0) return;
-    cards.push({ dest, entries: filtered });
-  });
+  countEl.innerHTML = `<b>${visible.length}</b> destination${visible.length===1?'':'s'} matching your filters`;
 
-  cards.sort((a,b)=> Math.min(...a.entries.map(e=>e.price)) - Math.min(...b.entries.map(e=>e.price)));
-
-  countEl.innerHTML = `<b>${cards.length}</b> destination${cards.length===1?'':'s'} matching your filters`;
-
-  if(cards.length === 0){
-    destEl.innerHTML = `<div class="empty">No routes match yet ✈️<br>Try widening the budget, clearing the date filter, or turning off "Flash deals only".</div>`;
+  if(visible.length === 0){
+    destEl.innerHTML = `<div class="empty">No routes match yet ✈️<br>Try a different search term or turn off "Flash deals only".</div>`;
     return;
   }
 
-  destEl.innerHTML = cards.map(({dest, entries})=>{
+  destEl.innerHTML = visible.map(dest=>{
     const cs = cardState[dest.key];
-    const minPrice = Math.min(...entries.map(e=>e.price));
-    const byMonth = {};
-    entries.forEach(e=>{
-      const mk = monthKey(e.depart);
-      (byMonth[mk] = byMonth[mk] || []).push(e);
-    });
-    const monthKeys = Object.keys(byMonth).sort();
-    const shownKeys = monthKeys.slice(0, cs.monthsShown);
-    const remaining = monthKeys.length - shownKeys.length;
+    let bodyHtml = '';
 
-    const monthsHtml = shownKeys.map(mk=>{
-      const chips = byMonth[mk].map(e=>`
-        <a class="date-chip tier-${e.tier}" href="${gflightsUrl(dest, e)}" target="_blank" rel="noopener">
+    if(cs.status === 'idle'){
+      bodyHtml = `<div class="state-msg">Tap to load real cached fares for this route…</div>`;
+    } else if(cs.status === 'loading'){
+      bodyHtml = `<div class="state-msg">Loading real fares from Aviasales…</div>`;
+    } else if(cs.status === 'error'){
+      bodyHtml = `
+        <div class="state-msg error">Couldn't reach the fare data just now.</div>
+        <a class="fallback-link" href="${gflightsUrl(dest)}" target="_blank" rel="noopener">Check Google Flights directly →</a>
+      `;
+    } else if(cs.status === 'empty'){
+      bodyHtml = `
+        <div class="state-msg">No cached fares found for this route right now — that just means no one's searched it recently, not that it isn't bookable.</div>
+        <a class="fallback-link" href="${gflightsUrl(dest)}" target="_blank" rel="noopener">Check Google Flights directly →</a>
+      `;
+    } else if(cs.status === 'ready'){
+      const chips = cs.entries.map(e=>`
+        <a class="date-chip" href="${gflightsUrl(dest, e)}" target="_blank" rel="noopener">
           <span class="dd">${fmtChipDate(e.depart)}</span>
           <span class="pp">£${e.price}</span>
-          <span class="nn">${e.days} day${e.days===1?'':'s'}</span>
+          <span class="nn">${tripDays(e.depart, e.ret)} days</span>
         </a>
       `).join('');
-      return `
-        <div class="month-group">
-          <div class="month-label">${monthLabel(byMonth[mk][0].depart)}</div>
-          <div class="chip-grid">${chips}</div>
-        </div>
+      bodyHtml = `
+        <div class="real-note">✓ <b>${cs.entries.length}</b> real cached fare${cs.entries.length===1?'':'s'} found — tap any to verify on Google Flights before booking.</div>
+        <div class="chip-grid">${chips}</div>
       `;
-    }).join('');
-
-    const moreBtn = remaining > 0
-      ? `<button class="more-months-btn" data-more="${dest.key}">+ ${remaining} more month${remaining===1?'':'s'}</button>`
-      : '';
+    }
 
     return `
       <div class="dest-card${cs.expanded ? ' expanded' : ''}" data-card="${dest.key}">
@@ -569,36 +476,30 @@ function renderAll(){
               <span class="dest-city">${dest.city}, ${dest.country}${dest.hot ? '<span class="badge-hot">HOT</span>' : ''}</span>
             </div>
             <div class="dest-tags">${regionLabel(dest.region)} · ${dest.code} · from ${dest.from}</div>
-            <div class="dest-sub">cheapest ~<b>£${minPrice}</b> return · ${entries.length} cheap date${entries.length===1?'':'s'} found</div>
           </div>
-          <div class="dest-price-col">
-            <span class="dest-price">£${minPrice}</span>
-            <span class="dest-price-label">return</span>
-            <div class="dest-chev">▾</div>
+          <div style="display:flex;align-items:center;">
+            <span class="dest-cta">${cs.expanded ? 'hide' : 'tap for fares'}</span>
+            <span class="dest-chev">▾</span>
           </div>
         </div>
-        <div class="dest-body">
-          ${monthsHtml}
-          ${moreBtn}
-        </div>
+        <div class="dest-body">${bodyHtml}</div>
       </div>
     `;
   }).join('');
 }
 
-/* ---------- event delegation for card toggle + "more months" ---------- */
+/* ---------- event delegation for card toggle ---------- */
 destEl.addEventListener('click', (e)=>{
   const toggleEl = e.target.closest('[data-toggle]');
-  if(toggleEl){
-    const key = toggleEl.getAttribute('data-toggle');
-    cardState[key].expanded = !cardState[key].expanded;
-    renderAll();
-    return;
-  }
-  const moreEl = e.target.closest('[data-more]');
-  if(moreEl){
-    const key = moreEl.getAttribute('data-more');
-    cardState[key].monthsShown += 3;
+  if(!toggleEl) return;
+  if(e.target.closest('a')) return; // let date-chip / fallback links behave normally
+  const key = toggleEl.getAttribute('data-toggle');
+  const cs = cardState[key];
+  cs.expanded = !cs.expanded;
+  if(cs.expanded && cs.status === 'idle'){
+    const dest = DESTINATIONS.find(d=>d.key===key);
+    loadFares(dest);
+  } else {
     renderAll();
   }
 });
