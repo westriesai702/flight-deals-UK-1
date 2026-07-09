@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-title" content="Cheap Flights UK">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0e1322">
+<title>Cheap Flights ✈️ Departing UK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0e1322;
+    --panel: #161d33;
+    --panel-2: #1c2440;
+    --board: #0b0f1c;
+    --split-line: #05070d;
+    --ink: #eef1f7;
+    --muted: #8b93ab;
+    --amber: #ffb400;
+    --teal: #33d9b2;
+    --hot: #ff5d6c;
+    --line: rgba(255,255,255,0.08);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% -10%, #1b2544 0%, transparent 45%),
+      radial-gradient(circle at 100% 0%, #182036 0%, transparent 40%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Space Grotesk', system-ui, sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:28px 18px 80px;}
+
+  /* ---------- HEADER / SPLIT-FLAP TITLE ---------- */
+  header{margin-bottom:22px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--teal); margin:0 0 10px;
+  }
+  .board-title{
+    display:flex;flex-wrap:wrap;gap:6px;
+  }
+  .flap{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:clamp(20px,5vw,34px);
+    background:var(--board);
+    color:var(--amber);
+    padding:8px 4px;
+    border-radius:4px;
+    min-width:24px;
+    text-align:center;
+    box-shadow:inset 0 -2px 0 var(--split-line), inset 0 2px 0 rgba(255,255,255,.04);
+    position:relative;
+  }
+  .flap::after{
+    content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--split-line);
+  }
+  .flap.space{background:transparent;box-shadow:none;min-width:10px;}
+  .subline{color:var(--muted);font-size:13.5px;margin-top:12px;line-height:1.5;max-width:560px;}
+  .subline b{color:var(--ink);font-weight:600;}
+  .updated-line{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+    margin-top:8px;letter-spacing:.03em;
+  }
+
+  /* ---------- QUICK TOGGLE BAR ---------- */
+  .quickbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .quick-toggle{
+    font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;
+    background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    padding:8px 14px;border-radius:999px;cursor:pointer;transition:.15s ease;
+  }
+  .quick-toggle:hover{border-color:var(--amber);}
+  .quick-toggle.active{background:var(--hot);color:#2b0308;border-color:var(--hot);}
+  .quick-toggle.copied{background:var(--teal);color:#04211b;border-color:var(--teal);}
+
+  /* ---------- FILTER PANEL ---------- */
+  .filters{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 16px 18px;
+    margin:22px 0 20px;
+  }
+  .filters-row{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
+  .filters-row .ft-label{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;}
+  .filters-row .chev{color:var(--muted);transition:transform .25s ease;font-size:12px;}
+  .filters-body{display:grid;gap:18px;margin-top:16px;}
+  .filters.collapsed .filters-body{display:none;}
+  .filters.collapsed .chev{transform:rotate(-90deg);}
+
+  .group-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;font-weight:600;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:13px;font-weight:500;
+    padding:7px 13px;border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--panel-2);color:var(--ink);
+    cursor:pointer;transition:.15s ease;
+  }
+  .chip:hover{border-color:var(--teal);}
+  .chip.active{background:var(--teal);color:#04211b;border-color:var(--teal);font-weight:700;}
+
+  .budget-row{display:flex;align-items:center;gap:14px;}
+  .budget-row input[type=range]{flex:1;accent-color:var(--amber);}
+  .budget-val{
+    font-family:'JetBrains Mono',monospace;font-weight:700;
+    background:var(--board);color:var(--amber);
+    padding:6px 10px;border-radius:6px;min-width:82px;text-align:center;font-size:14px;
+  }
+
+  .date-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .date-row input[type=date]{
+    background:var(--panel-2);border:1px solid var(--line);color:var(--ink);
+    padding:8px 10px;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:13px;
+    color-scheme: dark;
+  }
+  .date-row span{color:var(--muted);font-size:13px;}
+  .clear-link{
+    background:none;border:none;color:var(--muted);font-size:12.5px;cursor:pointer;
+    text-decoration:underline;padding:0;margin-top:2px;
+  }
+  .clear-link:hover{color:var(--hot);}
+
+  /* ---------- RESULT COUNT ---------- */
+  .result-count{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+    margin:4px 2px 14px;letter-spacing:.03em;
+  }
+  .result-count b{color:var(--teal);}
+
+  /* ---------- DEAL CARDS (departure board rows) ---------- */
+  .board{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .deal-row{
+    display:grid;
+    grid-template-columns: 1.6fr 1fr 1fr auto;
+    gap:10px;
+    align-items:center;
+    padding:14px 16px;
+    border-bottom:1px solid var(--line);
+    text-decoration:none;
+    color:var(--ink);
+    transition:background .15s ease;
+  }
+  .deal-row:last-child{border-bottom:none;}
+  .deal-row:hover{background:var(--panel-2);}
+  .dest{display:flex;flex-direction:column;gap:2px;}
+  .dest .city{font-weight:700;font-size:15.5px;}
+  .dest .region-tag{font-size:11px;color:var(--muted);}
+  .dates{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--muted);}
+  .dates b{color:var(--ink);font-weight:600;}
+  .price-col{font-family:'JetBrains Mono',monospace;text-align:right;}
+  .price{font-size:19px;font-weight:700;color:var(--amber);}
+  .price.hot{color:var(--hot);}
+  .per{font-size:10.5px;color:var(--muted);display:block;}
+  .go{
+    font-size:11.5px;font-weight:700;color:var(--teal);
+    border:1px solid var(--teal);border-radius:8px;padding:6px 9px;
+    white-space:nowrap;
+  }
+  .badge-hot{
+    font-size:10px;font-weight:700;background:var(--hot);color:#2b0308;
+    padding:2px 6px;border-radius:5px;margin-left:6px;letter-spacing:.03em;
+  }
+
+  .empty{
+    padding:40px 20px;text-align:center;color:var(--muted);font-size:14px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{margin-top:30px;color:var(--muted);font-size:12.5px;line-height:1.7;}
+  footer a{color:var(--teal);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+  .foot-block{margin-bottom:14px;}
+  .foot-title{color:var(--ink);font-weight:600;font-size:13px;margin-bottom:4px;}
+
+  @media (max-width:560px){
+    .deal-row{grid-template-columns:1fr auto;grid-template-areas:"dest price" "dates dates" "go go";row-gap:6px;}
+    .dest{grid-area:dest;}
+    .price-col{grid-area:price;text-align:right;}
+    .dates{grid-area:dates;}
+    .go{grid-area:go;justify-self:start;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">✈️ departing the UK</p>
+    <div class="board-title" id="boardTitle"></div>
+    <p class="subline">
+      Fares are <b>return, all-in estimates</b> (taxes + fuel), example prices seeded from recent search data — treat them as a starting point, not gospel. Tap any deal to check the <b>live price on Google Flights</b> before you get excited.
+    </p>
+    <p class="updated-line" id="updatedLine"></p>
+  </header>
+
+  <div class="quickbar">
+    <button class="quick-toggle" id="hotToggle">⚡ Flash deals only</button>
+    <button class="quick-toggle" id="shareBtn">🔗 Share this search</button>
+  </div>
+
+  <div class="filters" id="filtersPanel">
+    <div class="filters-row" id="filtersToggle">
+      <span class="ft-label">🔍 Filters — region / dates / budget</span>
+      <span class="chev">▾</span>
+    </div>
+    <div class="filters-body">
+      <div>
+        <div class="group-label">Region</div>
+        <div class="chips" id="regionChips"></div>
+      </div>
+      <div>
+        <div class="group-label">When are you free? (only shows trips that fit entirely inside this window)</div>
+        <div class="date-row">
+          <input type="date" id="dateFrom">
+          <span>→</span>
+          <input type="date" id="dateTo">
+        </div>
+      </div>
+      <div>
+        <div class="group-label">Budget — max return fare</div>
+        <div class="budget-row">
+          <input type="range" id="budgetSlider" min="20" max="1200" step="10" value="1200">
+          <span class="budget-val" id="budgetVal">≤ £1200</span>
+        </div>
+      </div>
+      <button class="clear-link" id="clearAll">↺ clear all filters</button>
+    </div>
+  </div>
+
+  <p class="result-count" id="resultCount"></p>
+
+  <div class="board" id="board"></div>
+
+  <footer>
+    <div class="foot-block">
+      <div class="foot-title">📲 Add to your home screen</div>
+      Safari → Share → "Add to Home Screen". Chrome (Android) → ⋮ menu → "Add to Home screen". Next time you're daydreaming about a trip, it's one tap away.
+    </div>
+    <div class="foot-block">
+      <div class="foot-title">✏️ Keeping this up to date</div>
+      This is a static starter, same idea as <a href="https://flight-deals-web.vercel.app/" target="_blank" rel="noopener">the HK version</a> that inspired it — deals here are examples pulled from current search data, not a live price feed. Open the file, find the <code>DEALS</code> list near the top of the script, and edit the entries (destination, dates, price, region) whenever you spot a new fare worth tracking. Each card links straight to a pre-filled Google Flights search so you can verify before booking.
+    </div>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   DEALS DATA — edit this list to keep prices current.
+   region: "europe" | "asia" | "americas" | "africa_me" | "oceania"
+   from: 3-letter UK airport code shown to the user
+   iata: destination IATA code, used to build the Google Flights link
+   price: return fare in GBP (whole numbers)
+   hot: true → flagged as an exceptional deal (red price + badge)
+   ========================================================= */
+const DEALS = [
+  { city:"Lyon", country:"France", region:"europe", from:"LTN", iata:"LYS", depart:"2026-09-03", ret:"2026-09-10", price:24, hot:true },
+  { city:"Bilbao", country:"Spain", region:"europe", from:"LHR", iata:"BIO", depart:"2026-10-06", ret:"2026-10-15", price:43, hot:true },
+  { city:"Faro", country:"Portugal", region:"europe", from:"LTN", iata:"FAO", depart:"2026-09-14", ret:"2026-09-21", price:26, hot:true },
+  { city:"Karlsruhe/Baden-Baden", country:"Germany", region:"europe", from:"LTN", iata:"FKB", depart:"2026-09-08", ret:"2026-09-15", price:26, hot:false },
+  { city:"Paris", country:"France", region:"europe", from:"LHR", iata:"ORY", depart:"2026-10-14", ret:"2026-11-05", price:59, hot:false },
+  { city:"Barcelona", country:"Spain", region:"europe", from:"STN", iata:"BCN", depart:"2026-09-09", ret:"2026-09-16", price:49, hot:false },
+  { city:"Amsterdam", country:"Netherlands", region:"europe", from:"LCY", iata:"AMS", depart:"2026-08-20", ret:"2026-08-24", price:68, hot:false },
+  { city:"Dublin", country:"Ireland", region:"europe", from:"LGW", iata:"DUB", depart:"2026-08-15", ret:"2026-08-19", price:39, hot:false },
+  { city:"Edinburgh", country:"Scotland", region:"europe", from:"LTN", iata:"EDI", depart:"2026-08-01", ret:"2026-08-04", price:32, hot:false },
+  { city:"Rome", country:"Italy", region:"europe", from:"STN", iata:"FCO", depart:"2026-09-22", ret:"2026-09-29", price:71, hot:false },
+  { city:"Prague", country:"Czechia", region:"europe", from:"LTN", iata:"PRG", depart:"2026-10-02", ret:"2026-10-09", price:44, hot:false },
+  { city:"Reykjavik", country:"Iceland", region:"europe", from:"LGW", iata:"KEF", depart:"2026-09-25", ret:"2026-10-02", price:118, hot:false },
+
+  { city:"Hong Kong", country:"HKSAR", region:"asia", from:"LHR", iata:"HKG", depart:"2026-10-12", ret:"2026-10-26", price:489, hot:false },
+  { city:"Bangkok", country:"Thailand", region:"asia", from:"LHR", iata:"BKK", depart:"2026-11-03", ret:"2026-11-20", price:459, hot:true },
+  { city:"Chiang Mai", country:"Thailand", region:"asia", from:"LHR", iata:"CNX", depart:"2026-11-05", ret:"2026-11-22", price:512, hot:false },
+  { city:"Kuala Lumpur", country:"Malaysia", region:"asia", from:"LHR", iata:"KUL", depart:"2026-10-20", ret:"2026-11-04", price:469, hot:false },
+  { city:"Tokyo", country:"Japan", region:"asia", from:"LHR", iata:"HND", depart:"2026-10-08", ret:"2026-10-19", price:579, hot:false },
+  { city:"Singapore", country:"Singapore", region:"asia", from:"LHR", iata:"SIN", depart:"2026-10-15", ret:"2026-10-29", price:525, hot:false },
+
+  { city:"New York", country:"USA", region:"americas", from:"STN", iata:"JFK", depart:"2026-09-16", ret:"2026-09-23", price:279, hot:true },
+  { city:"Toronto", country:"Canada", region:"americas", from:"LGW", iata:"YYZ", depart:"2026-10-01", ret:"2026-10-08", price:319, hot:false },
+  { city:"Orlando", country:"USA", region:"americas", from:"LGW", iata:"MCO", depart:"2026-09-29", ret:"2026-10-13", price:349, hot:false },
+
+  { city:"Marrakech", country:"Morocco", region:"africa_me", from:"LTN", iata:"RAK", depart:"2026-09-18", ret:"2026-09-25", price:65, hot:false },
+  { city:"Dubai", country:"UAE", region:"africa_me", from:"LHR", iata:"DXB", depart:"2026-10-11", ret:"2026-10-18", price:329, hot:false },
+  { city:"Cape Town", country:"South Africa", region:"africa_me", from:"LHR", iata:"CPT", depart:"2026-11-01", ret:"2026-11-15", price:589, hot:false },
+
+  { city:"Perth", country:"Australia", region:"oceania", from:"LHR", iata:"PER", depart:"2026-11-10", ret:"2026-11-28", price:699, hot:false },
+  { city:"Auckland", country:"New Zealand", region:"oceania", from:"LHR", iata:"AKL", depart:"2026-11-12", ret:"2026-12-02", price:849, hot:false }
+];
+
+const REGIONS = [
+  { key:"all", label:"All" },
+  { key:"europe", label:"🇪🇺 Europe" },
+  { key:"asia", label:"🌏 Asia" },
+  { key:"americas", label:"🌎 Americas" },
+  { key:"africa_me", label:"🕌 Africa & Middle East" },
+  { key:"oceania", label:"🌊 Oceania" }
+];
+
+const LAST_UPDATED = "9 July 2026";
+document.getElementById('updatedLine').textContent = `Last updated ${LAST_UPDATED} · prices will drift, always double-check`;
+
+let state = { region:"all", dateFrom:"", dateTo:"", budget:1200, hotOnly:false };
+
+/* ---------- restore state from URL (for "share this search") ---------- */
+(function restoreFromUrl(){
+  const p = new URLSearchParams(window.location.search);
+  if(p.has('region')) state.region = p.get('region');
+  if(p.has('from')) state.dateFrom = p.get('from');
+  if(p.has('to')) state.dateTo = p.get('to');
+  if(p.has('budget')) state.budget = Number(p.get('budget'));
+  if(p.has('hot')) state.hotOnly = p.get('hot') === '1';
+})();
+
+/* ---------- split-flap title ---------- */
+const titleText = "CHEAP FLIGHTS UK";
+const boardTitle = document.getElementById('boardTitle');
+titleText.split("").forEach(ch=>{
+  const f = document.createElement('span');
+  f.className = 'flap' + (ch === ' ' ? ' space' : '');
+  f.textContent = ch === ' ' ? '' : ch;
+  boardTitle.appendChild(f);
+});
+
+/* ---------- render region chips ---------- */
+const regionChips = document.getElementById('regionChips');
+function renderChips(){
+  regionChips.innerHTML = '';
+  REGIONS.forEach(r=>{
+    const c = document.createElement('button');
+    c.className = 'chip' + (state.region === r.key ? ' active' : '');
+    c.textContent = r.label;
+    c.onclick = ()=>{ state.region = r.key; renderChips(); renderDeals(); };
+    regionChips.appendChild(c);
+  });
+}
+
+/* ---------- filters collapse ---------- */
+document.getElementById('filtersToggle').onclick = ()=>{
+  document.getElementById('filtersPanel').classList.toggle('collapsed');
+};
+
+/* ---------- budget slider ---------- */
+const slider = document.getElementById('budgetSlider');
+const budgetVal = document.getElementById('budgetVal');
+slider.value = state.budget;
+budgetVal.textContent = state.budget >= 1200 ? "any budget" : `≤ £${state.budget}`;
+slider.oninput = ()=>{
+  state.budget = Number(slider.value);
+  budgetVal.textContent = state.budget >= 1200 ? "any budget" : `≤ £${state.budget}`;
+  renderDeals();
+};
+
+/* ---------- date filters ---------- */
+const dateFromEl = document.getElementById('dateFrom');
+const dateToEl = document.getElementById('dateTo');
+dateFromEl.value = state.dateFrom;
+dateToEl.value = state.dateTo;
+dateFromEl.onchange = e=>{ state.dateFrom = e.target.value; renderDeals(); };
+dateToEl.onchange = e=>{ state.dateTo = e.target.value; renderDeals(); };
+
+/* ---------- hot-deals-only toggle ---------- */
+const hotToggle = document.getElementById('hotToggle');
+hotToggle.classList.toggle('active', state.hotOnly);
+hotToggle.onclick = ()=>{
+  state.hotOnly = !state.hotOnly;
+  hotToggle.classList.toggle('active', state.hotOnly);
+  renderDeals();
+};
+
+/* ---------- share this search ---------- */
+document.getElementById('shareBtn').onclick = async ()=>{
+  const p = new URLSearchParams();
+  if(state.region !== 'all') p.set('region', state.region);
+  if(state.dateFrom) p.set('from', state.dateFrom);
+  if(state.dateTo) p.set('to', state.dateTo);
+  if(state.budget < 1200) p.set('budget', state.budget);
+  if(state.hotOnly) p.set('hot', '1');
+  const url = `${window.location.origin}${window.location.pathname}${p.toString() ? '?' + p.toString() : ''}`;
+  const btn = document.getElementById('shareBtn');
+  try{
+    await navigator.clipboard.writeText(url);
+  }catch(e){
+    window.prompt('Copy this link:', url);
+  }
+  const original = btn.textContent;
+  btn.textContent = '✓ Link copied';
+  btn.classList.add('copied');
+  setTimeout(()=>{ btn.textContent = original; btn.classList.remove('copied'); }, 1800);
+};
+
+/* ---------- clear all ---------- */
+document.getElementById('clearAll').onclick = ()=>{
+  state = { region:"all", dateFrom:"", dateTo:"", budget:1200, hotOnly:false };
+  slider.value = 1200; budgetVal.textContent = "any budget";
+  dateFromEl.value = ''; dateToEl.value = '';
+  hotToggle.classList.remove('active');
+  history.replaceState(null, '', window.location.pathname);
+  renderChips(); renderDeals();
+};
+
+/* ---------- helpers ---------- */
+function fmtDate(iso){
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+}
+function gflightsUrl(deal){
+  const q = `Flights to ${deal.city} from ${deal.from} on ${deal.depart} through ${deal.ret}`;
+  return `https://www.google.com/travel/flights?q=${encodeURIComponent(q)}`;
+}
+function regionLabel(key){
+  return (REGIONS.find(r=>r.key===key) || {}).label || key;
+}
+
+/* ---------- render deal board ---------- */
+const boardEl = document.getElementById('board');
+const countEl = document.getElementById('resultCount');
+
+function renderDeals(){
+  let list = DEALS.filter(d=>{
+    if(state.region !== 'all' && d.region !== state.region) return false;
+    if(state.hotOnly && !d.hot) return false;
+    if(state.budget < 1200 && d.price > state.budget) return false;
+    // "fits entirely inside this window" — both the outbound and return dates
+    // must fall within the selected range, matching the HK app's whole-trip logic.
+    if(state.dateFrom && (d.depart < state.dateFrom || d.ret < state.dateFrom)) return false;
+    if(state.dateTo && (d.depart > state.dateTo || d.ret > state.dateTo)) return false;
+    return true;
+  }).sort((a,b)=>a.price-b.price);
+
+  countEl.innerHTML = `<b>${list.length}</b> deal${list.length===1?'':'s'} matching your filters`;
+
+  if(list.length === 0){
+    boardEl.innerHTML = `<div class="empty">No deals in this range yet ✈️<br>Try widening the budget, clearing the date filter, or turning off "Flash deals only".</div>`;
+    return;
+  }
+
+  boardEl.innerHTML = list.map(d=>`
+    <a class="deal-row" href="${gflightsUrl(d)}" target="_blank" rel="noopener">
+      <div class="dest">
+        <span class="city">${d.city}, ${d.country}${d.hot ? '<span class="badge-hot">HOT</span>' : ''}</span>
+        <span class="region-tag">${regionLabel(d.region).replace(/^\S+\s/,'')} · from ${d.from}</span>
+      </div>
+      <div class="dates"><b>${fmtDate(d.depart)}</b> → <b>${fmtDate(d.ret)}</b></div>
+      <div class="price-col">
+        <span class="price${d.hot ? ' hot' : ''}">£${d.price}</span>
+        <span class="per">return, all-in</span>
+      </div>
+      <div class="go">Check live →</div>
+    </a>
+  `).join('');
+}
+
+renderChips();
+renderDeals();
+</script>
+</body>
+</html>
