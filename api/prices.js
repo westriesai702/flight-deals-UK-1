@@ -1,10 +1,12 @@
 // /api/prices.js — Vercel serverless function
-// Fetches real cached fares from the Travelpayouts Data API (Aviasales).
-// The API token is read from an environment variable so it's never exposed
-// to the browser or committed to GitHub.
+// Fetches real cached one-way fares (per day) from the Travelpayouts Data API
+// (Aviasales month-matrix endpoint), which is far denser than the
+// single-cheapest-per-month endpoint. The API token is read from an
+// environment variable so it's never exposed to the browser or committed
+// to GitHub.
 //
 // Query params: ?origin=LGW&destination=NCE
-// Returns: { success: true, data: [{ depart, ret, price, transfers }, ...] }
+// Returns: { success: true, data: [{ depart, price }, ...] }
 
 module.exports = async (req, res) => {
   const { origin, destination } = req.query;
@@ -29,33 +31,26 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const collected = [];
+    const byDate = {};
 
     for (const m of months) {
-      const url = `https://api.travelpayouts.com/v1/prices/cheap?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&depart_date=${m}&return_date=${m}&currency=gbp&token=${token}`;
+      const url = `https://api.travelpayouts.com/v2/prices/month-matrix?currency=gbp&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&show_to_affiliates=true&month=${m}-01&token=${token}`;
       const r = await fetch(url);
       if (!r.ok) continue;
       const json = await r.json();
-      if (json.success && json.data && json.data[destination]) {
-        Object.values(json.data[destination]).forEach(entry => {
-          if (entry.departure_at && entry.return_at && entry.price) {
-            collected.push({
-              depart: entry.departure_at.slice(0, 10),
-              ret: entry.return_at.slice(0, 10),
-              price: Math.round(entry.price),
-              transfers: entry.number_of_changes ?? null
-            });
-          }
+      if (json.success && Array.isArray(json.data)) {
+        json.data.forEach(entry => {
+          const depart = entry.depart_date || entry.date;
+          const price = entry.price || entry.value;
+          if (!depart || !price) return;
+          if (!byDate[depart] || byDate[depart] > price) byDate[depart] = price;
         });
       }
     }
 
-    // De-duplicate by departure date, keeping the cheapest entry found
-    const byDate = {};
-    collected.forEach(e => {
-      if (!byDate[e.depart] || byDate[e.depart].price > e.price) byDate[e.depart] = e;
-    });
-    const list = Object.values(byDate).sort((a, b) => a.depart.localeCompare(b.depart));
+    const list = Object.keys(byDate)
+      .sort()
+      .map(depart => ({ depart, price: Math.round(byDate[depart]) }));
 
     res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=86400');
     res.status(200).json({ success: true, data: list });
