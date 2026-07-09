@@ -173,7 +173,7 @@
     </div>
     <div class="foot-block">
       <div class="foot-title">✏️ How this works now</div>
-      Tap a destination to load its real cached fares from Aviasales (via the Travelpayouts Data API). These are genuine prices other travellers recently searched for — not invented numbers — but the cache can be up to about a week old, so a chip's price is a strong indicator, not a live quote. Always tap through to Google Flights to confirm before booking. If a route has no cached fares right now, you'll see a direct link to check Google Flights instead. To add or remove destinations, edit the <code>DESTINATIONS</code> list near the top of the script — no price numbers to maintain by hand anymore, since fares are fetched live.
+      Tap a destination to load its real cached one-way fares from Aviasales (via the Travelpayouts Data API), shown per day across the next 6 months. These are genuine prices other travellers recently searched for — not invented numbers — but the cache can be up to about a week old, so a chip's price is a strong indicator, not a live quote. Each chip is one-way; tap it to open Google Flights on that date and pick your own return. If a route has no cached fares right now, you'll see a direct link to check Google Flights instead. To add or remove destinations, edit the <code>DESTINATIONS</code> list near the top of the script — no price numbers to maintain by hand anymore, since fares are fetched live.
     </div>
   </footer>
 </div>
@@ -376,7 +376,7 @@ document.getElementById('clearAll').onclick = ()=>{
 /* ---------- helpers ---------- */
 function gflightsUrl(dest, entry){
   if(entry){
-    const q = `Flights to ${dest.city} from ${dest.from} on ${entry.depart} through ${entry.ret}`;
+    const q = `Flights to ${dest.city} from ${dest.from} departing ${entry.depart}`;
     return `https://www.google.com/travel/flights?q=${encodeURIComponent(q)}`;
   }
   const q = `Flights to ${dest.city} from ${dest.from}`;
@@ -389,10 +389,6 @@ function regionLabel(key){
 function fmtChipDate(iso){
   const d = new Date(iso + "T00:00:00");
   return d.toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' });
-}
-function tripDays(depart, ret){
-  const a = new Date(depart+"T00:00:00"), b = new Date(ret+"T00:00:00");
-  return Math.round((b-a) / 86400000);
 }
 
 /* ---------- fetch real fares for a destination (on demand) ---------- */
@@ -459,11 +455,11 @@ function renderAll(){
         <a class="date-chip" href="${gflightsUrl(dest, e)}" target="_blank" rel="noopener">
           <span class="dd">${fmtChipDate(e.depart)}</span>
           <span class="pp">£${e.price}</span>
-          <span class="nn">${tripDays(e.depart, e.ret)} days</span>
+          <span class="nn">one-way</span>
         </a>
       `).join('');
       bodyHtml = `
-        <div class="real-note">✓ <b>${cs.entries.length}</b> real cached fare${cs.entries.length===1?'':'s'} found — tap any to verify on Google Flights before booking.</div>
+        <div class="real-note">✓ <b>${cs.entries.length}</b> real cached fare${cs.entries.length===1?'':'s'} found — tap any to pick your return date on Google Flights.</div>
         <div class="chip-grid">${chips}</div>
       `;
     }
